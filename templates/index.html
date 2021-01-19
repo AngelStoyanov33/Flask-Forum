@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Flask chat</title>
+  <title>AskTUES</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    
   </head>
 <body>
 
@@ -37,6 +37,18 @@
       </div>
     </nav>
     <script>
+      function url_redirect(options){
+                 var $form = $("<form />");
+                 
+                 $form.attr("action",options.url);
+                 $form.attr("method",options.method);
+                 
+                 for (var data in options.data)
+                 $form.append('<input type="hidden" name="'+data+'" value="'+options.data[data]+'" />');
+                  
+                 $("body").append($form);
+                 $form.submit();
+            }
       $('#loginForm').submit(function(e){
         
         e.preventDefault();
@@ -45,14 +57,33 @@
             type: 'post',
             data:$('#loginForm').serialize(),
             success:function(data, statuss){
-                alert(data['token'])
+                if(data['token']){
+                //  localStorage.setItem("token", data['token']);
+                //  window.location.replace('/home');
+                /*var form = $('<form>', {
+                    method: 'post',
+                    action: '/home',
+                    arguments: {"token":data['token']},
+                    body: {"token":data['token']},
+                    $(document.body).append(form);
+                form.submit();
+                });*/
+                url_redirect({url: "/home",
+                  method: "post",
+                  data: {"token":data["token"]}
+                 });
+                
+                }
+                
             }
         });
       });
+      
     </script>
+    <form></form>
     <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)">
         {% if registerMode==False: %}
-            <h3>Welcome to flask forum</h3>
+            <h3>Welcome to <strong>AskTUES</strong></h3>
             <form action="/" method="post">
                 <button type = "submit" value="1" name="registerMode" class="btn btn-lg btn-primary">Register</a></button>
             </form>
