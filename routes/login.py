@@ -6,6 +6,7 @@ from DTOs.UserDTO import UserDTO
 import json
 from flask.json import jsonify
 
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -15,9 +16,10 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=email).first()
         if not user or not account.verify_password(password, user):
             return jsonify({'token': None})
         #token = user.generate_token()
-        userdto=UserDTO(u=user.username, t="toekn")
+        user.token = account.generate_token(user.username)
+        userdto=UserDTO(u=user.username, t=user.token)
         return jsonify(token=userdto.token, username=userdto.username)
