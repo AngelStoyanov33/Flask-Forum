@@ -1,0 +1,15 @@
+# IDE Generated files
+.settings/
+.vscode/
+
+# Virtual env files
+.env
+.venv
+env/
+venv/
+
+# Cache files
+__pycache__/
+
+# Database files
+*.db
