@@ -12,3 +12,4 @@ class User(db.Model):
     role = db.Column(db.String, nullable=False, default = "User")
     timestampRegister = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     timestampLastOnline = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    db.UniqueConstraint(username, email)
