@@ -24,7 +24,7 @@ class AccountManager:
         passwordHash = AccountManager.hashPassword(userdto.password)
         #TODO SALT
         try:
-            user= User(username=userdto.username, passwordHash=passwordHash, email=userdto.email)
+            user= User(username = userdto.username, passwordHash = passwordHash, email = userdto.email)
             db.session.add(user)
             db.session.commit()
             
@@ -38,10 +38,10 @@ class AccountManager:
     
     @staticmethod
     def generate_token(username):
-        s = TJWSerializer(app.secret_key, expires_in=appsettings.expireTime)
+        s = TJWSerializer(app.secret_key, expires_in = appsettings.expireTime)
         return s.dumps({'username': username}).decode('ascii')
 
     @staticmethod
     def decode_token(token):
         s = TJWSerializer(app.secret_key)
-        return (s.loads(token)).decode('ascii')
+        return str((s.loads(token))).encode().decode('ascii')
