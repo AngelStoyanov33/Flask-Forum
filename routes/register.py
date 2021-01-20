@@ -15,12 +15,14 @@ def register():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
-        userdto=UserDTO(u=username, e=email, p=password)
+        userdto=UserDTO(username=username, email=email, password=password)
 
         newUser = account.registerUser(userdto=userdto)
-        
-        if userdto:
-            newUser.token = "a"
+        #user.token = account.generate_token(user.username)
+        #userdto=UserDTO(username=user.username, token=user.token)
+        #return jsonify(token=userdto.token, username=userdto.username)
+        if newUser:
+            newUser.token = account.generate_token(newUser.username)
             return jsonify(token=newUser.token, username=newUser.username)
         else:
             return jsonify(token="", username="", error="Registration in database failed")

@@ -13,13 +13,12 @@ def login():
         #data = json.loads(request.data.decode('ascii'))
         #username = data['username']
         #password = data['password']
-        email = request.form['email']
+        username = request.form['email']
         password = request.form['password']
 
-        user = User.query.filter_by(username=email).first()
+        user = User.query.filter_by(username=username).first()
         if not user or not account.verify_password(password, user):
             return jsonify({'token': None})
-        #token = user.generate_token()
         user.token = account.generate_token(user.username)
-        userdto=UserDTO(u=user.username, t=user.token)
+        userdto=UserDTO(username=user.username, token=user.token)
         return jsonify(token=userdto.token, username=userdto.username)

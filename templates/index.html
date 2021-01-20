@@ -12,7 +12,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-bottom: 3px solid cyan;">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,26 +58,23 @@
             data:$('#loginForm').serialize(),
             success:function(data, statuss){
                 if(data['token']){
-                //  localStorage.setItem("token", data['token']);
-                //  window.location.replace('/home');
-                /*var form = $('<form>', {
-                    method: 'post',
-                    action: '/home',
-                    arguments: {"token":data['token']},
-                    body: {"token":data['token']},
-                    $(document.body).append(form);
-                form.submit();
-                });*/
-                url_redirect({url: "/home",
-                  method: "post",
-                  data: {"token":data["token"]}
-                 });
-                
+                  url_redirect({url: "/home",
+                    method: "post",
+                    data: {"token":data["token"]}
+                  });
                 }
-                
             }
         });
       });
+      function guestEntry(){
+        url_redirect({url: "/home",
+                  method: "post",
+                  data: {"token":""}
+                });
+        
+
+      }
+      
       
     </script>
     <form></form>
@@ -88,7 +85,7 @@
                 <button type = "submit" value="1" name="registerMode" class="btn btn-lg btn-primary">Register</a></button>
             </form>
             
-            <button type = "button" class="btn btn-secondary btn-lg">Continue as guest</a></button>
+            <button type = "button" id="guestButton" onclick="guestEntry()" class="btn btn-secondary btn-lg">Continue as guest</a></button>
         {% else %}
         <div class="container" style="background: #61bdc5;">
             <div class="row">
@@ -170,10 +167,16 @@
                                         type: 'post',
                                         data:$('#registerForm').serialize(),
                                         success:function(data, statuss){
-                                            alert(data['token'])
+                                            if(data['token']){
+                                              url_redirect({url: "/home",
+                                                method: "post",
+                                                data: {"token":data["token"]}
+                                              });
+                                            }
                                         }
                                     });
                                   });
+                                  
                                 </script>
                             </div>
             </div>
