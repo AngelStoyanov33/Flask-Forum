@@ -28,12 +28,53 @@
               <a class="nav-link" href="#">Link</a>
             </li>
           </ul>
-          
-          <button class="btn btn-outline-success">My Account</button>
+          <button type="button" onclick="redirectToProfilePage()" class="btn btn-outline-success">My Account</button>
         </div>
       </div>
     </nav>
 
     <h3>Welcome, {{username}}</h3>
 </body>
+
+<script>
+  function url_redirect(options){
+             var $form = $("<form />");
+             
+             $form.attr("action",options.url);
+             $form.attr("method",options.method);
+             
+             for (var data in options.data)
+             $form.append('<input type="hidden" name="'+data+'" value="'+options.data[data]+'" />');
+              
+             $("body").append($form);
+             $form.submit();
+        }
+  function redirectToProfilePage(){
+      url_redirect({url:'/u/{{username}}',
+                method: "post",
+                data: {"token": localStorage.getItem("token")}
+              });
+    }
+ /* $('#accountForm').submit(function(e){
+    $(this).append('<input type="hidden" name="token" value="'+localStorage.getItem("token")+'" /> ');
+    e.preventDefault();
+    url_redirect({url: '/u/{{username}}',
+                    method: "post",
+                    data: {"token":localStorage.getItem("token")}
+                  });
+    $.ajax({
+        url: '/u/{{username}}',
+        type: 'post',
+        data:$('#accountForm').serialize(),
+        success:function(data, statuss){
+            if(data['token']){
+              url_redirect({url: '/u/{{username}}',
+                method: "post",
+                data: {"token":localStorage.getItem("token")}
+              });
+            }
+        }
+    });
+  }); */ 
+</script>
 </html>
