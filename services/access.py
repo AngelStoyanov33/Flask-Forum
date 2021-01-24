@@ -21,7 +21,7 @@ def require_access(access_level):
                     #    print("User not logged")
                     #    return redirect('/')
                 if access_level == 1:
-                    if token and account.decode_token(token):
+                    if not token or not account.decode_token(token):
                         print("User already logged on")
                         return redirect('/')
             else:
