@@ -10,6 +10,8 @@ class User(db.Model):
     passwordHash = db.Column(db.String, nullable=False)
     profilePicture = db.Column(db.String, nullable=False, default = "C:")
     role = db.Column(db.String, nullable=False, default = "User")
+    firstName = db.Column(db.String, nullable=True, default = "Not specified")
+    lastName = db.Column(db.String, nullable=True, default = "Not specified")
     timestampRegister = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     timestampLastOnline = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     db.UniqueConstraint(username, email)
