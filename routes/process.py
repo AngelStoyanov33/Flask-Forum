@@ -1,7 +1,7 @@
 from flask import request, render_template, url_for, redirect
 from models.User import *
 from __init__ import app
-from services.AccountRepository import AccountManager as account
+from services.Account import AccountManager as account
 from DTOs.UserDTO import UserDTO
 import json
 from flask.json import jsonify
