@@ -14,7 +14,7 @@ def home():
     if request.method == 'POST':
         token = request.form['token']
         accountDetails= {}
-        if(len(token)>0):
+        if(len(token) > 0):
             payload = account.decode_token(token)
             accountDetails = json.loads(payload.replace('\'',"\""))
         else:

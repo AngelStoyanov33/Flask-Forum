@@ -45,3 +45,12 @@ class AccountManager:
     def decode_token(token):
         s = TJWSerializer(app.secret_key)
         return str((s.loads(token))).encode().decode('ascii')
+
+    @staticmethod
+    def get_user_by_token(token):
+        if token:
+            s = TJWSerializer(app.secret_key)
+            payload = s.loads(token)
+            return User.query.filter_by(username=payload.get('username')).first()
+        else:
+            return None
