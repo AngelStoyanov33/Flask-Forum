@@ -36,3 +36,8 @@ class TopicService:
             topicsSerialized.append({"id": topic.id, "name": topic.name, "popularity": topic.popularity})
         output= {"topics":topicsSerialized}
         return output
+
+    @staticmethod
+    def get_topic_id_by_name(name):
+        print(name)
+        return Topic.query.filter_by(name=name).first().id
