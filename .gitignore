@@ -16,3 +16,6 @@ tests/
 
 # Database files
 *.db
+
+# Uploads
+uploads/
