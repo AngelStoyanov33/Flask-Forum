@@ -11,14 +11,14 @@ class ThreadService:
         print("TS works!")
 
     @staticmethod
-    def createThread(threaddto, user):
+    def createThread(threaddto):
         #if not ThreadService.isUnique(topicdto): return None
 
         try:
-            thread= Thread(userCreatorID= user.id, title = threaddto.title, content=threaddto.content, topicID= threaddto.topicID)
+            print(threaddto.userCreatorID)
+            thread= Thread(userCreatorID= threaddto.userCreatorID, title = threaddto.title, content=threaddto.content, topicID= threaddto.topicID)
             db.session.add(thread)
             db.session.commit()
-            
         except:
             return None
         return threaddto
