@@ -50,16 +50,24 @@
             <div class="row">
                <div class="col-sm-3" style="position:relative; left: -100px; top: -20px">
                   <div class="text-center">
-                     <br><br>
+                     <br><br><br><br>
                      {% if user.profilePicture == "DEFAULT" %}
                      <img src="/static/default_profile.jpg" class="avatar img-thumbnail" />
                   {% else %}
-                     <img src="https://homepages.cae.wisc.edu/~ece533/images/frymire.png" class="avatar img-thumbnail" /> 
-                  {% endif %}  
+                  <img src="/uploads/{{user.profilePicture}}" class="avatar img-thumbnail" style="transform: scale(2);" /> 
+                  {% endif %} 
 
-                     <form enctype = "multipart/form-data" id="editForm" class="form" method="post" action="/process">
-
-                        <input type="file" name="file" id="file" size = "20" class="text-center center-block file-upload">
+                     <!-- <form enctype = "multipart/form-data" id="editForm" class="form" method="post" action="/process"> -->
+                        <br><br><br><br>
+                        <form id="upload-file" method="post" enctype="multipart/form-data">
+                           <fieldset>
+                               <input type="file" name="file" id="file" size = "20" class="text-center center-block file-upload">
+                           </fieldset>
+                           <fieldset>
+                               <button id="upload-file-btn" type="button">Upload</button>
+                           </fieldset>
+                       </form>
+                        
                   </div>
                   <br>
                </div>
@@ -68,7 +76,7 @@
                   <div class="tab-content">
                      <div class="tab-pane active" id="home">
 
-                        <!-- <form id="editForm" class="form" method="post" action="/process" enctype=multipart/form-data> -->
+                        <form id="editForm" class="form" method="post" action="/process" enctype=multipart/form-data>
 
                            <div class="form-group">
                               <div class="col-xs-6">
@@ -145,15 +153,13 @@
                   
                  $("body").append($form);
                  $form.submit();
-            }     
+            }  
       $('#editForm').submit(function(e){
       $(this).append('<input type="hidden" name="token" value="'+localStorage.getItem("token")+'" /> ');
-      $(this).append('file', $('#file')[0].files[0]);
         e.preventDefault();
         $.ajax({
             url: '/process',
             type: 'post',
-            enctype: 'multipart/form-data',
             data:$('#editForm').serialize(),
             success:function(data, statuss){
                   alert("Test");
@@ -165,5 +171,30 @@
             }
         });
       });
+
+      $(function() {
+    $('#upload-file-btn').click(function() {
+        var form_data = new FormData($('#upload-file')[0]);
+        form_data.append("token", localStorage.getItem("token"));
+        $.ajax({
+            type: 'POST',
+            url: '/process/image',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+               alert("test");
+                console.log('Success!');
+                url_redirect({url: "/u/{{user.username}}",
+                    method: "post",
+                    data: {"token":localStorage.getItem("token")}
+                  });
+            },
+        });
+    });
+});
+
+
    </script>
 </html>

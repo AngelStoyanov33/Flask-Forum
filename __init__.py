@@ -16,4 +16,4 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.secret_key = appsettings.secret_key
 db = SQLAlchemy(app)
 
-from routes import register, login, index, home, topic, addThread, profile, process, search, reply
+from routes import register, login, index, home, topic, thread, profile, process, search, reply, process_image, get_upload

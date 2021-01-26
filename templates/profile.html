@@ -48,13 +48,13 @@
          </div>
          <br>
          <div class="row">
-            <div class="col-sm-3" style="position:relative; left: -100px; top: -20px">
+            <div class="col-sm-3" style="position:relative;    left: -100px; top: -20px">
                <div class="text-center">
-                  <br><br>
+                  <br><br><br><br>  
                   {% if user.profilePicture == "DEFAULT" %}
                      <img src="/static/default_profile.jpg" class="avatar img-thumbnail" />
                   {% else %}
-                     <img src="https://homepages.cae.wisc.edu/~ece533/images/frymire.png" class="avatar img-thumbnail" /> 
+                  <img src="/uploads/{{user.profilePicture}}" class="avatar img-thumbnail" style="transform: scale(2);" /> 
                   {% endif %}   
                </div>
                <br>
