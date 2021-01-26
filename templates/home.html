@@ -88,7 +88,21 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
           
-          <button type="button" onclick="redirectToProfilePage()" class="btn btn-outline-success">My Account</button>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              My account
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" onclick="redirectToProfilePage()">My account</a>
+              <a class="dropdown-item" onclick="logout()">Logout</a>
+            </div>
+          </div>
+
+
+          <!-- <button type="button" onclick="redirectToProfilePage()" class="btn btn-outline-success">My Account</button> -->
+
+
+
         </div>
       </div>
     </nav>
@@ -217,6 +231,15 @@
 <script>
   function redirectToProfilePage(){
       url_redirect({url:'/u/{{username}}',
+                method: "post",
+                data: {"token": localStorage.getItem("token")}
+              });
+    }
+
+
+    function logout(){
+      localStorage.setItem("token", "")
+      url_redirect({url:'/',
                 method: "post",
                 data: {"token": localStorage.getItem("token")}
               });
