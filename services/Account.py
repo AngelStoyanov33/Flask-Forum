@@ -63,7 +63,10 @@ class AccountManager:
         else:
             return None
 
-
     @staticmethod
     def get_user_by_id(id):
-        return User.query.filter_by(id=id).first()
+        return User.query.filter_by(id=id).first()        
+
+    @staticmethod
+    def check_permission(user, role):
+        return True if user.role >= role else False    

@@ -8,8 +8,14 @@ import json
 
 ACCESS_LEVELS = {
     'not_logged' : 0,
-    'logged' : 1,
-    'moderator': 2
+    'logged' : 1
+}
+
+ROLES = {
+    'guest' : 0,
+    'user' : 1,
+    'moderator' : 2,
+    'administrator' : 3
 }
 
 def require_access(access_level):
@@ -25,21 +31,36 @@ def require_access(access_level):
                 if access_level == 1:
                     if not token and account.decode_token(token):
                         print("User already logged on")
-                        return redirect('/')
-                if access_level == 2:
-                    accountDetails= {}
-                    if len(token)==0:
-                         print("Guest has no permission for that")
-                         return redirect('/')
+                        return redirect('/home')
+                # if access_level == 2:
+                #     accountDetails= {}
+                #     if len(token)==0:
+                #          print("Guest has no permission for that")
+                #          return redirect('/')
 
-                    payload = account.decode_token(token)
-                    accountDetails = json.loads(payload.replace('\'',"\""))
-                    user = User.query.filter_by(username=accountDetails['username']).first()
-                    if user.role=="User":
-                        print("User has no permission for that")
-                        return redirect('/')
+                #     payload = account.decode_token(token)
+                #     accountDetails = json.loads(payload.replace('\'',"\""))
+                #     user = User.query.filter_by(username=accountDetails['username']).first()
+                #     if user.role=="User":
+                #         print("User has no permission for that")
+                #         return redirect('/')
             else:
                 return redirect('/')
             return func(*args, **kwargs)
         return wrapper
     return up_wrapper
+
+
+def requires_role(role):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if 'token' in request.form:
+                token = request.form['token']
+                user = account.get_user_by_token(token)
+                if not user.check_permission(role):
+                    flash('Error: Insufficient permissions!')
+                    return redirect('/')
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator    
