@@ -6,6 +6,8 @@ from DTOs.UserDTO import UserDTO
 import json
 from flask.json import jsonify
 from services.access import require_access, ACCESS_LEVELS
+from services.upload import allowed_file
+from werkzeug.utils import secure_filename
 import os
 
 @app.route('/process', methods=['POST', 'GET'])
@@ -30,6 +32,16 @@ def process_data():
         password = request.form['password']
         if password != "":
             user.password = account.hashPassword(password)
+            
+        if 'file' in request.args:
+            file = request.files['file']
+            if file and file.filename != "" and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], user.profilePicture))
+                user.profilePicture = filename
+        else:
+            print("File not uploaded")
 
         db.session.commit()
         #TODO: password2 and password_conf

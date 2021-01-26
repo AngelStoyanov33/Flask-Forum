@@ -11,7 +11,9 @@ import appsettings
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+app.config['UPLOAD_FOLDER'] = appsettings.UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.secret_key = appsettings.secret_key
 db = SQLAlchemy(app)
 
-from routes import register, login, index, home, topic, thread, profile, process, search, view_thread
+from routes import register, login, index, home, topic, addThread, profile, process, search, reply
