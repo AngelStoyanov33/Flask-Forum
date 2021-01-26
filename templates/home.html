@@ -194,7 +194,7 @@
                   
                   e.preventDefault();
                   $.ajax({
-                      url: '/addThread',
+                      url: '/thread/add',
                       type: 'post',
                       data:$('#threadForm').serialize(),
                       success:function(data, statuss){

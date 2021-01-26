@@ -14,20 +14,30 @@ import json
 #@require_access(ACCESS_LEVELS['not_logged'])
 def view_thread(id):
     
-    token = request.form['token']
 
+    #TODOS
+    # add ed buttons if user is creator
+    # make page accessable for guests if no role required
     thread = threadService.get_thread_by_id(id)
-    userCreator = accountService.get_user_by_id(thread.userCreatorID)
-
-    account_details= {}
-    if len(token)>0:
-        payload = accountService.decode_token(token)
-        account_details = json.loads(payload.replace('\'',"\""))
-    else:
-        account_details['username']='guest'
-    userDto = UserDTO(username=account_details['username'], token=request.form['token'])
-
     labelCreated = str(thread.timestampCreated)[:16]
+    userCreator = accountService.get_user_by_id(thread.userCreatorID)
+    logged = False
+    client = UserDTO(username="guest")
+    if "token" in request.form:
+        client = accountService.get_user_by_token(request.form['token'])
+        
+        if client:
+            logged = True
+            print(client.username)
+            if 1<thread.roleRequired:
+                return render_template("denied.html")
 
-    return render_template('view_thread.html', id=id, thread=thread, labelCreated=labelCreated, userCreator=userCreator)
+    return render_template('view_thread.html', id=id, thread=thread, labelCreated=labelCreated, userCreator=userCreator, client=client, logged=logged)
+    
+
+    
+            
+    #vuv frontenda da proverqvam client.username == userCreator.username
+
+    
 

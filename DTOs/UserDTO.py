@@ -3,9 +3,10 @@ class UserDTO:
     email = str
     password = str
     token = str
-    def __init__(self, username="", email="", password="", token=""):
+    role = int
+    def __init__(self, username="", email="", password="", token="", role=0):
         self.username=username
         self.email=email
         self.password=password
         self.token=token
-    
+        self.role=role

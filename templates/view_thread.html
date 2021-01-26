@@ -24,47 +24,123 @@
                      <a class="nav-link" href="#">Link</a>
                   </li>
                </ul>
-               <button class="btn btn-outline-success">My Account</button>
+               {% if logged %}
+               <button type="button" onclick="redirectToProfilePage()" class="btn btn-outline-success">My Account</button>
+               <script>
+                  function redirectToProfilePage(){
+                  url_redirect({url:'/u/{{username}}',
+                           method: "post",
+                           data: {"token": localStorage.getItem("token")}
+                        });
+               }
+               </script>
+               {% else %}
+               <form action="/" method="post">
+                  <button type = "submit" value="0" name="registerMode" class="btn btn-outline-success">Login</a></button>
+                  <button type = "submit" value="1" name="registerMode" class="btn btn-lg btn-primary">Sign up</a></button>
+              </form>
+               {% endif %}
             </div>
          </div>
       </nav>     
-
-
-      <div class="container" style="background-color: lightcyan; 
-         width: 1400px;    
-         height: 300px;
-         border-radius: 10px; 
-         padding: 10px; 
-         margin-top: 2%;
-         border: 2px solid darkcyan; 
-         vertical-align: middle;">
-            <div class="row">
-               <div class="col-lg-2">
-                  <div style=" 
-                     width: 50%;
-                     height: 50%;
-                     left: 50%;
-                     top: 50%;
-                     margin-top: 50%;
-                     margin-left: 50%;">
-                     <div>photo</div>
-                     <div>{{userCreator.username}}</div>
+      {% if client.username == userCreator.username %}
+      <div style="width: 1400px; margin: 0 auto; margin-top: 2%;">
+         <div class="container" style="background-color: lightcyan; 
+            width: 1300px;    
+            height: 300px;
+            border-radius: 10px; 
+            padding: 10px; 
+            
+            border: 2px solid darkcyan; 
+            float: left;">
+               <div class="row">
+                  <div class="col-lg-2">
+                     <div style=" 
+                        width: 50%;
+                        height: 50%;
+                        left: 50%;
+                        top: 50%;
+                        margin-top: 50%;
+                        margin-left: 50%;">
+                        <div>photo</div>
+                        <div>{{userCreator.username}}</div>
+                     </div>
+                  </div>
+                  <div class="col-lg-8">
+                     <strong>{{thread.title}}</strong>
+                     <br>
+                     <br>
+                     <div>{{thread.content}}</div>
+                  </div>
+                  <div class="col-lg-2">
+                     <div>Published on</div>
+                     <div>{{labelCreated}}</div>
                   </div>
                </div>
-               <div class="col-lg-8">
-                  <strong>{{thread.title}}</strong>
-                  <br>
-                  <br>
-                  <div>{{thread.content}}</div>
-               </div>
-               <div class="col-lg-2">
-                  <div>Published on</div>
-                  <div>{{labelCreated}}</div>
-               </div>
-            </div>
-            
+         </div>
+         
+
+         <style> a.btn:hover {
+            -webkit-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -o-transform: scale(1.1);
+         }
+         a.btn {
+            -webkit-transform: scale(0.8);
+            -moz-transform: scale(0.8);
+            -o-transform: scale(0.8);
+            -webkit-transition-duration: 0.5s;
+            -moz-transition-duration: 0.5s;
+            -o-transition-duration: 0.5s;
+         }</style>
+         <div class="column">
+                <a href="#" class="btn btn-primary a-btn-slide-text">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    <span><strong>Edit</strong></span>            
+                </a>
+                <a href="#" class="btn btn-primary a-btn-slide-text">
+                   <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    <span><strong>Delete</strong></span>            
+                </a>
+         </div>
+         
       </div>
 
+      {% else %}
+      <div class="container" style="background-color: lightcyan; 
+      width: 1400px;    
+      height: 300px;
+      border-radius: 10px; 
+      padding: 10px; 
+      margin-top: 2%;
+      border: 2px solid darkcyan;">
+         <div class="row">
+            <div class="col-lg-2">
+               <div style=" 
+                  width: 50%;
+                  height: 50%;
+                  left: 50%;
+                  top: 50%;
+                  margin-top: 50%;
+                  margin-left: 50%;">
+                  <div>photo</div>
+                  <div>{{userCreator.username}}</div>
+               </div>
+            </div>
+            <div class="col-lg-8">
+               <strong>{{thread.title}}</strong>
+               <br>
+               <br>
+               <div>{{thread.content}}</div>
+            </div>
+            <div class="col-lg-2">
+               <div>Published on</div>
+               <div>{{labelCreated}}</div>
+            </div>
+         </div>
+   </div>
+      {%endif%}
+      
 
       
    </body>
