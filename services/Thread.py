@@ -33,6 +33,11 @@ class ThreadService:
             return ""
 
     @staticmethod
+    def get_thread_by_id(id):
+        return Thread.query.filter_by(id=id).first()
+
+
+    @staticmethod
     def get_results_from_search(filter):
         #if not ThreadService.isUnique(topicdto): return None
         #topicID, title, content
@@ -51,8 +56,8 @@ class ThreadService:
                         "title": result.title, 
                         "content": result.content,
                         "roleRequired": result.roleRequired, 
-                        "timestampCreated": result.timestampCreated,
-                        "timestampLastUpdated": result.timestampLastUpdated})
+                        "timestampCreated": str(result.timestampCreated)[:10],
+                        "timestampLastUpdated": str(result.timestampLastUpdated)[:10]})
         else:
             keyword=filter.strip()
             for result in Thread.query.filter(Thread.title.contains(keyword)):
@@ -63,8 +68,8 @@ class ThreadService:
                     "title": result.title, 
                     "content": result.content,
                     "roleRequired": result.roleRequired, 
-                    "timestampCreated": result.timestampCreated,
-                    "timestampLastUpdated": result.timestampLastUpdated})
-        return jsonify(results=results)
+                    "timestampCreated": str(result.timestampCreated)[:10],
+                    "timestampLastUpdated": str(result.timestampLastUpdated)[:10]})
+        return results
 
 

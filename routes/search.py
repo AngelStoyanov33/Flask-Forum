@@ -19,9 +19,17 @@ def search():
         
         token = request.form['token']
         search = request.form['search']
+        
+        account_details= {}
+        if len(token)>0:
+            payload = accountService.decode_token(token)
+            account_details = json.loads(payload.replace('\'',"\""))
+        else:
+            account_details['username']='guest'
+        userDto= UserDTO(username=account_details['username'], token=request.form['token'])
 
         results = list()
         results = threadService.get_results_from_search(search)
-
-        return results
+        print(results)
+        return render_template('search.html', user= userDto, results=results, search=search)
 

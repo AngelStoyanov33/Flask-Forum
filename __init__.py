@@ -14,4 +14,4 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.secret_key = appsettings.secret_key
 db = SQLAlchemy(app)
 
-from routes import register, login, index, home, topic, addThread, profile, process, search
+from routes import register, login, index, home, topic, addThread, profile, process, search, view_thread

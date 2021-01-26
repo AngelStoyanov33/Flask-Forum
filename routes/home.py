@@ -24,7 +24,7 @@ def home():
         else:
             account_details['username']='guest'
         userDto= UserDTO(username=account_details['username'], token=request.form['token'])
-        opics = topicService.getAll()
+        topics = topicService.getAll()
         try:
             topic_mode = int(request.form.get("addTopicMode"))
             thread_mode = int(request.form.get("addThreadMode"))

@@ -62,3 +62,8 @@ class AccountManager:
             return User.query.filter_by(username=payload.get('username')).first()
         else:
             return None
+
+
+    @staticmethod
+    def get_user_by_id(id):
+        return User.query.filter_by(id=id).first()
