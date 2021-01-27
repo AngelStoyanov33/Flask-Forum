@@ -38,7 +38,6 @@ def deleteThread(id):
     if deleted_id:
         return jsonify(status="Success")
     else:
-<<<<<<< HEAD
         return jsonify(status="Error")
         
 
@@ -55,6 +54,3 @@ def editThread(id):
     else:
         return jsonify(status="Error")
 
-=======
-        return jsonify(title="", content="", error="Unauthorized")
->>>>>>> 07cfc3220e74aee3ffe680d63b7c445a7151c0b3
