@@ -7,7 +7,7 @@ from models.Topic import *
 
 
 class Thread(db.Model):
-    id=db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer,primary_key=True)
     userCreatorID = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     topicID= db.Column(db.Integer, db.ForeignKey(Topic.id))
     title = db.Column(db.String, nullable=False)

@@ -20,10 +20,10 @@ class ReplyService:
     @staticmethod
     def editReply(reply_id, content):
         try:
-            reply = Reply.query.filter_by(id = reply_id).first()
-            reply.content = content
-
-            db.session.commit()
+            if content != "":
+                reply = Reply.query.filter_by(id = reply_id).first()
+                reply.content = content
+                db.session.commit()
         except:
             return None
 
