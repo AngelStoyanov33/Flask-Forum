@@ -43,4 +43,3 @@ def deleteThread(id):
             return jsonify(title="", content="", error="Adding thread in database failed")
     else:
         return jsonify(title="", content="", error="Unauthorized")
-

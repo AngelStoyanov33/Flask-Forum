@@ -71,5 +71,3 @@ class ThreadService:
                     "timestampCreated": str(result.timestampCreated)[:10],
                     "timestampLastUpdated": str(result.timestampLastUpdated)[:10]})
         return results
-
-

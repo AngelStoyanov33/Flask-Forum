@@ -32,4 +32,3 @@ def search():
         results = threadService.get_results_from_search(search)
         print(results)
         return render_template('search.html', user= userDto, results=results, search=search)
-
