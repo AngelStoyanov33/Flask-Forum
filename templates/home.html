@@ -23,6 +23,17 @@
   <script script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+  <style>
+    .dot {
+  height: 25px;
+  width: 25px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+}
+  </style>
+
 </head>
 <body>
 
@@ -124,7 +135,7 @@
     <br>
     <br>
     <br>
-    <div style="background-color: lightcyan; width: 80%; position: fixed; left: 50%; transform: translate(-60%, 0%);">
+    <div style="background-color: lightcyan; width: 80%; position: relative; left: 50%; transform: translate(-60%, 0%);">
       <div class="row">
             <div class="col-9">
               <h3 style= "margin-left: 3%;">Dashboard</h3>
@@ -146,6 +157,8 @@
               <div class="form-group">
                 <label for="topicName">Choose topic name</label>
                 <input type="text" name="topicName" class="form-control" id="topicName" aria-describedby="topicInfo" placeholder="Topic name">
+                <label for="topicDescription">Choose topic description</label>
+                <input type="text" name="topicDescription" class="form-control" id="topicDescription" aria-describedby="topicInfo" placeholder="Topic Description">
                 <small id="topicInfo" class="form-text text-muted">Everyone will be able to see that you are the creator.</small>
               </div>
               
@@ -201,7 +214,7 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
-          
+
           <script>
                 $('#threadForm').submit(function(e){
                   $(this).append('<input type="hidden" name="token" value="'+localStorage.getItem("token")+'" /> ');
@@ -219,11 +232,37 @@
 
                 
           </script>
-
+      
           {% endif %}
         </div>
         
     </div>
+    <br><br><br>
+
+    <!-- {% for topic in topics %}
+    <h1>{{topic.name}} </h1>
+    {% endfor %} -->
+
+    {% for topic in topics %}
+    <div class="list-group" style="background-color: lightcyan; position: relative; width: 80%; left: 50%; transform: translate(-60%, 0%);">
+      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{topic.name}}</h5>
+          <!-- <small>3 days ago</small> -->
+          <!-- <span class="dot"><p style="color: white; position:absolute; margin-right: 3em; padding: 0 0.5em 2em;"></p></span> -->
+          <span class="badge badge-primary badge-pill" style="background-color: green;">{{topic.threads_count}}</span>
+        </div>
+        <p class="mb-1">{{topic.description}}</p>
+        <!-- <small>Donec id elit non mi porta.</small> -->
+      </a>
+
+    </div>
+    <br>
+    {% endfor %}
+
+
+<!-- 
+    <h1>test</h1> -->
     
     
     
