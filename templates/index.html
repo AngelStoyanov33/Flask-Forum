@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    
+    <link ref="stylesheet" type="text/css" href="dist/snackbar.min.css" /> <script src="dist/snackbar.min.js"></script>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/snackbar.css') }}">
   </head>
 <body>
 
@@ -68,10 +69,11 @@
         });
       });
       function guestEntry(){
-        url_redirect({url: "/home",
+        showSnackbar();
+        /*url_redirect({url: "/home",
                   method: "post",
                   data: {"token":""}
-                });
+                });*/
         
 
       }
@@ -87,6 +89,7 @@
             </form>
             
             <button type = "button" id="guestButton" onclick="guestEntry()" class="btn btn-secondary btn-lg">Continue as guest</a></button>
+            <div id="snackbar">Some text some message..</div>
         {% else %}
         <div class="container" style="background: #61bdc5;">
             <div class="row">

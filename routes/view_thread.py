@@ -18,6 +18,13 @@ def view_thread(id):
     #TODOS
     # add ed buttons if user is creator
     # make page accessable for guests if no role required
+    editMode=False
+
+    if "threadEditMode" in request.form:
+        if int(request.form["threadEditMode"])>0:
+            editMode=True
+            
+        
     thread = threadService.get_thread_by_id(id)
     labelCreated = str(thread.timestampCreated)[:16]
     userCreator = accountService.get_user_by_id(thread.userCreatorID)
@@ -32,7 +39,8 @@ def view_thread(id):
             if 1<thread.roleRequired:
                 return render_template("denied.html")
 
-    return render_template('view_thread.html', id=id, thread=thread, labelCreated=labelCreated, userCreator=userCreator, client=client, logged=logged)
+    print(editMode)
+    return render_template('view_thread.html', id=id, thread=thread, labelCreated=labelCreated, userCreator=userCreator, client=client, logged=logged, editMode=editMode)
     
 
     

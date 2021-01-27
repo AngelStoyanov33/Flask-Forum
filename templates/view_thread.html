@@ -51,7 +51,7 @@
             border-radius: 10px; 
             padding: 10px; 
             
-            border: 2px solid darkcyan; 
+            border: 2px solid darkcyan;
             float: left;">
                <div class="row">
                   <div class="col-lg-2">
@@ -66,12 +66,32 @@
                         <div>{{userCreator.username}}</div>
                      </div>
                   </div>
+                  {% if editMode==True %}
                   <div class="col-lg-8">
-                     <strong>{{thread.title}}</strong>
-                     <br>
-                     <br>
-                     <div>{{thread.content}}</div>
+                     <form method="post" id="threadForm">
+                  <div class="form-group">
+                    <input type="text" name="threadName" class="form-control" id="threadName" value="{{thread.title}}" aria-describedby="topicInfo" placeholder="Thread name">
                   </div>
+                  <div class="form-group">
+                    <textarea class="form-control" name="threadContent" id="threadContent" rows="3">{{thread.content}}</textarea>
+                  </div>
+    
+                  
+                  
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                  </div>
+               
+               {%else%}
+               <div class="col-lg-8">
+                  <strong>{{thread.title}}</strong>
+                  <br>
+                  <br>
+                  <div>{{thread.content}}</div>
+               </div>
+
+               {%endif%}
+                  
                   <div class="col-lg-2">
                      <div>Published on</div>
                      <div>{{labelCreated}}</div>
@@ -94,14 +114,16 @@
             -o-transition-duration: 0.5s;
          }</style>
          <div class="column">
-                <a href="#" class="btn btn-primary a-btn-slide-text">
+                <a onclick="redirectToEditPage()" class="btn btn-primary a-btn-slide-text">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     <span><strong>Edit</strong></span>            
                 </a>
-                <a href="#" class="btn btn-primary a-btn-slide-text">
-                   <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    <span><strong>Delete</strong></span>            
-                </a>
+                <!-- <a href="#" onclick="someFunction(); return false;">LINK</a> -->
+                <a onclick="deleteThread()" class="btn btn-primary a-btn-slide-text">
+                  <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                  <span><strong>Delete</strong></span>            
+              </a>
+                
          </div>
          
       </div>
@@ -128,10 +150,7 @@
                </div>
             </div>
             <div class="col-lg-8">
-               <strong>{{thread.title}}</strong>
-               <br>
-               <br>
-               <div>{{thread.content}}</div>
+               
             </div>
             <div class="col-lg-2">
                <div>Published on</div>
@@ -141,8 +160,62 @@
    </div>
       {%endif%}
       
+      <script>
+         function url_redirect(options){
+           var $form = $("<form />");
+                    
+           $form.attr("action",options.url);
+           $form.attr("method",options.method);
+                    
+           for (var data in options.data)
+           $form.append('<input type="hidden" name="'+data+'" value="'+options.data[data]+'" />');
+                       
+           $("body").append($form);
+           $form.submit();
+        }
 
-      
+         function deleteThread(){
+           $.ajax({
+              url: '/thread/delete/{{thread.id}}',
+              type: 'post',
+              data:{"token": localStorage.getItem("token")},
+              success:function(data, statuss){
+                 if(data["status"]=="Success"){
+                    url_redirect({url: "/home",
+                    method: "post",
+                    data: {"token": localStorage.getItem("token"), "addTopicMode": "0","addThreadMode":"0"}
+                    });
+                 }
+                 
+              }
+           });
+        }
+        function redirectToEditPage(){
+           url_redirect({url: "/thread/{{thread.id}}",
+                    method: "post",
+                    data: {"token": localStorage.getItem("token"), "threadEditMode": "1"}
+                    });
+        }
+        $('#threadForm').submit(function(e){
+                  $(this).append('<input type="hidden" name="token" value="'+localStorage.getItem("token")+'" /> ');
+                  $(this).append('<input type="hidden" name="threadId" value="{{ thread.id}}" /> ');
+                  e.preventDefault();
+                  $.ajax({
+                      url: '/thread/edit/{{thread.id}}',
+                      type: 'post',
+                      data:$('#threadForm').serialize(),
+                      success:function(data, statuss){
+                        if(data["status"]=="Success"){
+                           url_redirect({url: "/thread/{{thread.id}}",
+                           method: "post",
+                           data: {"token": localStorage.getItem("token")}
+                           });
+                        }
+                      }
+                  });
+                });
+      </script>
+               
    </body>
    <script>
       function url_redirect(options){
@@ -161,12 +234,6 @@
          url_redirect({url: "/home",
                   method: "post",
                   data: {"token": localStorage.getItem("token"), "addTopicMode": "0","addThreadMode":"0"}
-               });
-      }
-      function openThread(id){
-         url_redirect({url: "/thread",
-                  method: "post",
-                  data: {"token": localStorage.getItem("token"), "id":id}
                });
       }
    </script>

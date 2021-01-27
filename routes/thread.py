@@ -1,8 +1,8 @@
 from flask import request, render_template
 from models.User import *
 from __init__ import app
-from services.Account import AccountManager as account
-from services.Thread import ThreadService as thread
+from services.Account import AccountManager as accountService
+from services.Thread import ThreadService as threadService
 import flask
 from DTOs.UserDTO import UserDTO
 from DTOs.TopicDTO import TopicDTO
@@ -17,12 +17,12 @@ from flask.json import jsonify
 def addThread():
         
     token = request.form['token']
-    user = account.get_user_by_token(token)
+    user = accountService.get_user_by_token(token)
     print(user.id)
         
     if user:
         threaddto=ThreadDTO(userCreatorID= user.id, title=request.form["threadName"], content=request.form["threadContent"], topicID=request.form["topicId"])
-        new_thread = thread.createThread(threaddto=threaddto)
+        new_thread = threadService.createThread(threaddto=threaddto)
         if new_thread:
             return jsonify(title=new_thread.title, content=new_thread.content, userCreator=user.username)
         else:
@@ -47,10 +47,10 @@ def editThread(id):
     token = request.form['token']
     user = accountService.get_user_by_token(token)
 
-    threaddto = ThreadDTO(id=request.form["threadId"],title=request.form["threadTitle"], content=request.form["threadContent"])
-    threaddto = threadService.delete_thread(threaddto, user)
+    threaddto = ThreadDTO(id=id,title=request.form["threadName"], content=request.form["threadContent"])
+    threaddto = threadService.edit_thread(threaddto, user)
     if threaddto:
-        return jsonify(title=threaddto.title, content=threaddto.content)
+        return jsonify(title=threaddto.title, content=threaddto.content, status="Success")
     else:
         return jsonify(status="Error")
 

@@ -24,7 +24,7 @@ class ThreadService:
         return threaddto
 
     @staticmethod
-    def delete_thread(threaddto, user):
+    def delete_thread(id, user):
         #if not ThreadService.isUnique(topicdto): return None
         thread = ThreadService.get_thread_by_id(id)
         if thread.userCreatorID==user.id or user.role>1:
@@ -38,7 +38,7 @@ class ThreadService:
         return id
 
     @staticmethod
-    def editReply(threaddto, user):
+    def edit_thread(threaddto, user):
 
         thread = ThreadService.get_thread_by_id(threaddto.id)
         if thread.userCreatorID==user.id or user.role>1:
