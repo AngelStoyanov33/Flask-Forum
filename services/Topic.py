@@ -19,7 +19,7 @@ class TopicService:
     def createTopic(topicdto):
         #if not ThreadService.isUnique(topicdto): return None
         try:
-            topic= Topic(name = topicdto.name, popularity=topicdto.popularity)
+            topic= Topic(name = topicdto.name, popularity=topicdto.popularity, description = topicdto.description)
             db.session.add(topic)
             db.session.commit()
             print("Add")
@@ -33,7 +33,8 @@ class TopicService:
         topics = Topic.query.all()
         topicsSerialized= list()
         for topic in  topics:
-            topicsSerialized.append({"id": topic.id, "name": topic.name, "popularity": topic.popularity})
+            threads_count = len(Thread.query.filter_by(topicID = topic.id).all())
+            topicsSerialized.append({"id": topic.id, "name": topic.name, "popularity": topic.popularity, "description": topic.description, "threads_count" : threads_count})
         output= {"topics":topicsSerialized}
         return output
 
