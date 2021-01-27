@@ -29,6 +29,7 @@ def view_thread(id):
     labelCreated = str(thread.timestampCreated)[:16]
     userCreator = accountService.get_user_by_id(thread.userCreatorID)
     logged = False
+    
     client = UserDTO(username="guest")
     if "token" in request.form:
         client = accountService.get_user_by_token(request.form['token'])
@@ -41,11 +42,4 @@ def view_thread(id):
 
     print(editMode)
     return render_template('view_thread.html', id=id, thread=thread, labelCreated=labelCreated, userCreator=userCreator, client=client, logged=logged, editMode=editMode)
-    
-
-    
-            
     #vuv frontenda da proverqvam client.username == userCreator.username
-
-    
-

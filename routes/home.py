@@ -15,32 +15,29 @@ def home():
     if request.method == 'POST':
         addTopicMode= False
         addThreadMode= False
-        
+        logged = True
         token = request.form['token']
-        account_details= {}
-        if len(token)>0:
-            payload = accountService.decode_token(token)
-            account_details = json.loads(payload.replace('\'',"\""))
-        else:
-            account_details['username']='guest'
-        userDto= UserDTO(username=account_details['username'], token=request.form['token'])
+        client = accountService.get_user_by_token(token)
+        if not client:
+            client=UserDTO(username="guest")
+            logged=False
+
         topics = topicService.getAll()
         try:
             topic_mode = int(request.form.get("addTopicMode"))
             thread_mode = int(request.form.get("addThreadMode"))
-            print("A")
+
             topics = topicService.getAll()
-            print(topics)
+
             if topic_mode>0:
                 addTopicMode=True
-                
             if thread_mode>0:
                 addThreadMode=True
                 
                 topics = topicService.getAll()
-                return render_template('home.html', username=userDto.username, token = userDto.token, addTopicMode=addTopicMode, addThreadMode=addThreadMode, topics=topics["topics"])
+                return render_template('home.html', username=client.username, logged=logged, addTopicMode=addTopicMode, addThreadMode=addThreadMode, topics=topics["topics"])
         except:
             pass
 
-        return render_template('home.html', username=userDto.username, token = userDto.token, addTopicMode=addTopicMode, addThreadMode=addThreadMode, topics=topics["topics"])
+        return render_template('home.html', username=client.username, logged=logged, addTopicMode=addTopicMode, addThreadMode=addThreadMode, topics=topics["topics"])
 

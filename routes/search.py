@@ -16,19 +16,15 @@ def search():
     if request.method == 'POST':
         addTopicMode= False
         addThreadMode= False
-        
+        logged = True
         token = request.form['token']
         search = request.form['search']
         
-        account_details= {}
-        if len(token)>0:
-            payload = accountService.decode_token(token)
-            account_details = json.loads(payload.replace('\'',"\""))
-        else:
-            account_details['username']='guest'
-        userDto= UserDTO(username=account_details['username'], token=request.form['token'])
+        client= accountService.get_user_by_token(token)
+        if not client:
+            client=UserDTO(username="guest")
+            logged=False
 
         results = list()
         results = threadService.get_results_from_search(search)
-        print(results)
-        return render_template('search.html', user= userDto, results=results, search=search)
+        return render_template('search.html', client= client, results=results, search=search, logged=logged)

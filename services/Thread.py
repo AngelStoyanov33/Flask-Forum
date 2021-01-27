@@ -4,6 +4,7 @@ import appsettings
 from models.Topic import *
 from models.Thread import *
 from services.Topic import TopicService as topicService
+from services.Account import AccountManager as accountService
 from flask.json import jsonify
 
 class ThreadService:
@@ -83,6 +84,7 @@ class ThreadService:
                     results.append({
                         "id": result.id, 
                         "userCreatorID": result.userCreatorID, 
+                        "userCreatorName": accountService.get_user_by_id(result.userCreatorID).username,
                         "topicID": result.topicID,
                         "title": result.title, 
                         "content": result.content,
@@ -95,6 +97,7 @@ class ThreadService:
                 results.append({
                     "id": result.id, 
                     "userCreatorID": result.userCreatorID, 
+                    "userCreatorName": accountService.get_user_by_id(result.userCreatorID).username,
                     "topicID": result.topicID,
                     "title": result.title, 
                     "content": result.content,

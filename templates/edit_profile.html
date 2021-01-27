@@ -18,10 +18,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                     <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                     <a class="nav-link active" onclick="redirectToHomePage()" type="button" aria-current="page">Home</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" href="#">Link</a>
                   </li>
                </ul>
                <button class="btn btn-outline-success">My Account</button>
@@ -171,6 +170,13 @@
             }
         });
       });
+      
+      function redirectToHomePage(){
+         url_redirect({url: "/home",
+                  method: "post",
+                  data: {"token": localStorage.getItem("token"), "addTopicMode": "0","addThreadMode":"0"}
+               });
+      }
 
       $(function() {
     $('#upload-file-btn').click(function() {
