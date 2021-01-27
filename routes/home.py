@@ -42,5 +42,5 @@ def home():
         except:
             pass
 
-        return render_template('home.html', username=userDto.username, token = userDto.token, addTopicMode=addTopicMode, addThreadMode=addThreadMode)
+        return render_template('home.html', username=userDto.username, token = userDto.token, addTopicMode=addTopicMode, addThreadMode=addThreadMode, topics=topics["topics"])
 
