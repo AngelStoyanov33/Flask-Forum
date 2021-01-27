@@ -62,8 +62,21 @@
                         top: 50%;
                         margin-top: 50%;
                         margin-left: 50%;">
-                        <div>photo</div>
-                        <div>{{userCreator.username}}</div>
+                        {% if userCreator.profilePicture == "DEFAULT" %}
+                        <img src="/static/default_profile.jpg" class="avatar img-thumbnail" style="position:relative; top: -50px; right: 50px;"/>
+                        {% else %}
+                        <img src="/uploads/{{user.profilePicture}}" class="avatar img-thumbnail" style="position:relative; top: -200px; transform: scale(2);" /> 
+                        {% endif %} 
+                        <div class = "text-center" style="position:relative; top: -35px; right: 50px;"><p style="font-size: 20px;">{{userCreator.username}}</p></div>
+                        <div class = "text-center" style="position:relative; top: -45px; right: 50px;">
+                        {% if userCreator.role == 3 %}
+                        <p style="color:Red; caret-color:black; font-size: 20px;position:relative; top: -5px; right: 10px; text-align:center; display: block;">Administrator</p>
+                        {% elif userCreator.role == 2 %}
+                        <p style="color:purple; caret-color:black; font-size: 20px;position:relative; top: -5px; right: 0px; text-align:center; display: block;">Moderator</p>
+                        {% elif userCreator.role == 1 %}
+                        <p style="font-size: 20px;">User</p>
+                        {% endif %}
+                     </div>
                      </div>
                   </div>
                   {% if editMode==True %}
