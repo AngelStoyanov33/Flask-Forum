@@ -24,6 +24,37 @@ class ThreadService:
         return threaddto
 
     @staticmethod
+    def delete_thread(threaddto, user):
+        #if not ThreadService.isUnique(topicdto): return None
+        thread = ThreadService.get_thread_by_id(id)
+        if thread.userCreatorID==user.id or user.role>1:
+            try:
+                Thread.query.filter_by(id = id).delete()
+                db.session.commit()
+            except:
+                return None
+        else:
+            return None
+        return id
+
+    @staticmethod
+    def editReply(threaddto, user):
+
+        thread = ThreadService.get_thread_by_id(threaddto.id)
+        if thread.userCreatorID==user.id or user.role>1:
+            try:
+                if threaddto.title != "":
+                    thread.title = threaddto.title
+                if threaddto.content != "":
+                    thread.content = threaddto.content
+                    db.session.commit()
+            except:
+                return None
+        else:
+            return None
+        return threaddto
+    
+    @staticmethod
     def find_between( s, first, last ):
         try:
             start = s.index( first ) + len( first )

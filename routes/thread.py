@@ -33,14 +33,24 @@ def addThread():
 @app.route('/thread/delete/<id>', methods=['POST'])
 def deleteThread(id):
     token = request.form['token']
-    user = account.get_user_by_token(token)
-    if user:
-        threaddto=ThreadDTO( userCreatorID= user.id, title=request.form["threadName"], content=request.form["threadContent"], topicID=request.form["topicId"])
-        new_thread = thread.createThread(threaddto=threaddto)
-        if new_thread:
-            return jsonify(title=new_thread.title, content=new_thread.content, userCreator=user.username)
-        else:
-            return jsonify(title="", content="", error="Adding thread in database failed")
+    user = accountService.get_user_by_token(token)
+    deleted_id = threadService.delete_thread(id, user)
+    if deleted_id:
+        return jsonify(status="Success")
     else:
-        return jsonify(title="", content="", error="Unauthorized")
+        return jsonify(status="Error")
+        
+
+
+@app.route('/thread/edit/<id>', methods=['POST'])
+def editThread(id):
+    token = request.form['token']
+    user = accountService.get_user_by_token(token)
+
+    threaddto = ThreadDTO(id=request.form["threadId"],title=request.form["threadTitle"], content=request.form["threadContent"])
+    threaddto = threadService.delete_thread(threaddto, user)
+    if threaddto:
+        return jsonify(title=threaddto.title, content=threaddto.content)
+    else:
+        return jsonify(status="Error")
 
