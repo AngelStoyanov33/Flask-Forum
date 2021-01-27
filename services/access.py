@@ -58,7 +58,7 @@ def requires_role(role):
             if 'token' in request.form:
                 token = request.form['token']
                 user = account.get_user_by_token(token)
-                if not user.check_permission(role):
+                if not account.check_permission(user, role):
                     flash('Error: Insufficient permissions!')
                     return redirect('/')
             return func(*args, **kwargs)
