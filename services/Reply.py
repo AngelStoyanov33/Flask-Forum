@@ -18,23 +18,33 @@ class ReplyService:
         return replydto
 
     @staticmethod
-    def editReply(reply_id, content):
+    def editReply(replydto):
         try:
-            if content != "":
-                reply = Reply.query.filter_by(id = reply_id).first()
-                reply.content = content
+            if replydto.content != "":
+                reply = Reply.query.filter_by(id = replydto.id).first()
+                reply.content = replydto.content
                 db.session.commit()
         except:
             return None
 
-        return reply_id
+        return replydto
 
     @staticmethod
-    def deleteReply(reply_id):
+    def deleteReply(replydto):
         try:
-            Reply.query.filter_by(id = reply_id).delete()
+            Reply.query.filter_by(id = replydto.id).delete()
             db.session.commit()
         except:
             return None
 
-        return reply_id
+        return replydto
+
+
+    @staticmethod
+    def get_all_replies(threaddto):
+        try:
+            replies = Reply.query.filter_by(threadRefferedID = threaddto.id).all()
+        except:
+            return None
+
+        return replies

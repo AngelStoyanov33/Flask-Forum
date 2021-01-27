@@ -12,23 +12,46 @@ import json
 from flask.json import jsonify
 
 
-@app.route('/reply/add', methods=['GET', 'POST'])
+@app.route('/thread/<thread_id>/reply/add', methods=['GET', 'POST'])
 @require_access(ACCESS_LEVELS['logged'])
 @requires_role(ROLES['user'])
-def add_reply():
+def add_reply(thread_id):
     if request.method == 'POST':
 
         token = request.form['token']
         user = account.get_user_by_token(token)
 
-        threadRefferedID = request.form['threadRefferedID']
         content = request.form['reply_content']
 
-        new_replydto = ReplyDTO(userCreatorID = user.id, threadRefferedID = threadRefferedID, content = content)
+        new_replydto = ReplyDTO(userCreatorID = user.id, threadRefferedID = thread_id, content = content)
         created_replydto = replyService.addReply(new_replydto)
 
         if created_replydto != None:
-            return jsonify(content=created_replydto.content, userCreator=user.username)
+            return jsonify(content=created_replydto.content, userCreator=user.username, status="Success")
         else:
-            return jsonify(content="", error="Adding thread in database failed")
+            return jsonify(content="", status="Adding reply in database failed")
+    return "1"
+
+
+@app.route('/thread/<thread_id>/reply/<reply_id>/edit', methods=['GET', 'POST'])
+# @require_access(ACCESS_LEVELS['logged'])
+# @requires_role(ROLES['user'])
+
+def edit_reply(thread_id, reply_id):
+    if request.method == 'POST':
+
+        token = request.form['token']
+        user = account.get_user_by_token(token)
+
+        content = request.form['reply_content']
+
+        new_replydto = ReplyDTO(id = reply_id, userCreatorID = user.id, threadRefferedID = thread_id, content = content)
+        edited_replydto = replyService.editReply(new_replydto)
+
+        if edited_replydto != None:
+            print("SUCESS")
+            return jsonify(content=edited_replydto.content, userCreator=user.username, status="Success")
+        else:
+            print("NO SUCESS")
+            return jsonify(content="", status="Editing reply failed")
     return "1"
