@@ -8,6 +8,7 @@ import flask
 from DTOs.UserDTO import UserDTO
 from services.access import require_access, ACCESS_LEVELS
 import json
+import appsettings
 
 
 @app.route('/search/page/<page_id>', methods=['POST', 'GET'])
@@ -27,4 +28,12 @@ def search(page_id):
 
         results = list()
         results = threadService.get_results_from_search(search, int(page_id))
-        return render_template('search.html', client= client, results=results, search=search, logged=logged)
+        pages=results["totalCount"]//appsettings.thread_count_on_page
+        if results["totalCount"]%appsettings.thread_count_on_page:
+            pages+=1
+        showPager = True
+        if pages<2:
+            showPager=False
+
+        print(pages)
+        return render_template('search.html', client= client, results=results["results"], search=search, logged=logged, currpage=int(page_id), pages=pages, showPager=showPager)

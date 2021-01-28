@@ -74,7 +74,7 @@ class ThreadService:
         #if not ThreadService.isUnique(topicdto): return None
         #topicID, title, content
 
-        results = list()
+        results = dict()
         filter_topic_name = ThreadService.find_between(filter, "{", "}")
         
         if len(filter_topic_name)>0:
@@ -82,9 +82,11 @@ class ThreadService:
             
             keyword=filter[filter.find('}')+1:].strip()
             totalCount=Thread.query.filter_by(topicID=filter_topic_id).filter(Thread.title.contains(keyword)).count()
-            results.append({"totalCount":totalCount})
-            for result in Thread.query.filter_by(topicID=filter_topic_id).filter(Thread.title.contains(keyword)).filter(Thread.id>=(page_id-1)*appsettings.thread_count_on_page).limit(appsettings.thread_count_on_page):
-                    results.append({
+            results["results"]=list()
+            results["totalCount"]=totalCount
+            print(totalCount)
+            for result in Thread.query.filter_by(topicID=filter_topic_id).filter(Thread.title.contains(keyword)).filter(Thread.id>(page_id-1)*appsettings.thread_count_on_page).limit(appsettings.thread_count_on_page):
+                    results["results"].append({
                         "id": result.id, 
                         "userCreatorID": result.userCreatorID, 
                         "userCreatorName": accountService.get_user_by_id(result.userCreatorID).username,
@@ -96,10 +98,11 @@ class ThreadService:
                         "timestampLastUpdated": str(result.timestampLastUpdated)[:10]})
         else:
             keyword=filter.strip()
-            totalCount=Thread.query.filter(Thread.title.contains(keyword)).count()
-            results.append({"totalCount":totalCount})
+            totalCount=Thread.query.filter(Thread.title.contains(keyword)).filter(Thread.id>(page_id-1)*appsettings.thread_count_on_page).limit(appsettings.thread_count_on_page).count()
+            results["results"]=list()
+            results["totalCount"]=totalCount
             for result in Thread.query.filter(Thread.title.contains(keyword)):
-                results.append({
+                results["results"].append({
                     "id": result.id, 
                     "userCreatorID": result.userCreatorID, 
                     "userCreatorName": accountService.get_user_by_id(result.userCreatorID).username,
