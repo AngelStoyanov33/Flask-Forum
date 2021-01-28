@@ -55,3 +55,16 @@ def edit_reply(thread_id, reply_id):
             print("NO SUCESS")
             return jsonify(content="", status="Editing reply failed")
     return "1"
+
+@app.route('/thread/<thread_id>/reply/<reply_id>/delete', methods=['POST'])
+def delete_reply(thread_id, reply_id):
+    token = request.form['token']
+    user = account.get_user_by_token(token)
+
+    replydto = ReplyDTO(id=reply_id)
+    deleted_reply = replyService.deleteReply(replydto)
+
+    if deleted_reply:
+        return jsonify(status="Success")
+    else:
+        return jsonify(status="Error")

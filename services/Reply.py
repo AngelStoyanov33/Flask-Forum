@@ -41,9 +41,9 @@ class ReplyService:
 
 
     @staticmethod
-    def get_all_replies(threaddto):
+    def get_all_replies(replydto):
         try:
-            replies = Reply.query.filter_by(threadRefferedID = threaddto.id).all()
+            replies = Reply.query.filter_by(threadRefferedID = replydto.id).all()
         except:
             return None
 

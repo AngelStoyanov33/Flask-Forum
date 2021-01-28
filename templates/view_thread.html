@@ -328,6 +328,7 @@
                   $.ajax({
                       url: '/thread/edit/{{thread.id}}',
                       type: 'post',
+                      data:$('#threadForm').serialize(),
                       data:{"token": localStorage.getItem("token"), "threadId": "{{thread.id}}", "threadContent":$threadContent, "threadName": "{{thread.name}}"},
                       success:function(data, statuss){
                         if(data["status"]=="Success"){
@@ -430,7 +431,7 @@
                     <span><strong>Edit</strong></span>            
                 </a>
 
-                <a onclick="" class="btn btn-primary a-btn-slide-text" style="position: relative; right: -84%;">
+                <a onclick="deleteReply('{{reply.id}}')" class="btn btn-primary a-btn-slide-text" style="position: relative; right: -84%;">
                   <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                   <span><strong>Delete</strong></span>            
               </a>
@@ -470,8 +471,24 @@
             method: "post",
             data: {"token": localStorage.getItem("token"), "editReplyMode" : "1", "replyId" : reply_id.toString()}
             });
-            
-}
+         }
+		function deleteReply(reply_id){
+           $.ajax({
+              url: '/thread/{{thread.id}}/reply/' + reply_id + '/delete',
+              type: 'post',
+              data:{"token": localStorage.getItem("token")},
+              success:function(data, statuss){
+                 if(data["status"]=="Success"){
+                    url_redirect({url: "/thread/{{thread.id}}",
+                    method: "post",
+                    data: {"token": localStorage.getItem("token"), "editReplyMode" : "0", "replyId" : reply_id.toString()}
+                    });
+                 }
+                 
+              }
+           });
+        }
+
 
         $('#replyForm').submit(function(e){
                   $(this).append('<input type="hidden" name="token" value="'+ localStorage.getItem("token")+'" /> ');
