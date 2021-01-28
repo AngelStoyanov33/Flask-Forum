@@ -25,15 +25,8 @@ Install the dependencies.
 $ pip install -r requirements.txt
 ```
 ### Start the server.
-On Linux
 ```py
-$ export FLASK_APP=run.py
-$ export FLASK_ENV=development
-$ flask run
-```
-On Windows
-```py
-$ py ./run.py
+$ python run.py
 ```
 
 ### Locate the forum @
