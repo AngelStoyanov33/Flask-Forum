@@ -41,6 +41,17 @@ class AccountManager:
         return userdto
 
     @staticmethod
+    def remove_user(userid):
+        try:
+            User.query.filter_by(id=userid).delete()
+            db.session.commit()
+            
+        except:
+            return None
+        return userid
+
+
+    @staticmethod
     def verify_password(password, user):
         return user.passwordHash == AccountManager.hashPassword(password)
     

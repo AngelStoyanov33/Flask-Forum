@@ -29,13 +29,32 @@ def profile_info(username):
 def edit_profile_info(username):
     user = User.query.filter_by(username=username).first()
     isRequestOwner = False
+    logged=False
     if request.method == 'POST':
         if len(request.form) > 1:
             first_name = request.form['first_name']
             print(first_name)
         token = request.form['token']
+        client=account.get_user_by_token(token)
+        if client:
+            logged=True
         isRequestOwner = account.get_user_by_token(token).username == username
-        return render_template('edit_profile.html', user = user)
+        return render_template('edit_profile.html', logged= logged, user = user)
+    if isRequestOwner == False:
+        return redirect('/home')
+
+@app.route('/u/<username>/delete', methods=['POST', 'GET'])
+@require_access(ACCESS_LEVELS['logged'])
+def remove_profile(username):
+    user = User.query.filter_by(username=username).first()
+    isRequestOwner = False
+    if request.method == 'POST':
+        token = request.form['token']
+        isRequestOwner = account.get_user_by_token(token).username == username
+        if isRequestOwner == True:
+            if account.remove_user(user.id):
+                return redirect('/home')
+
     if isRequestOwner == False:
         return redirect('/home')
     

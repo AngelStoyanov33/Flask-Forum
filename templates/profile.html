@@ -78,7 +78,7 @@
                    </div>
                  </div>
                   <script>
-                        function logout(){
+         function logout(){
             localStorage.setItem("token", "")
             url_redirect({url:'/',
                      method: "post",
@@ -169,6 +169,7 @@
                               <div class="col-xs-12">
                                  <br>
                                  <button class="btn btn-lg btn-success" type="button" onclick="redirectToEditProfilePage()"></i> Edit profile</button>
+                                 <button class="btn btn-lg btn-danger" type="button" onclick="deleteProfile()"></i> Delete profile</button>
                               </div>
                            </div>
                            {% endif %}
@@ -194,6 +195,7 @@
            $("body").append($form);
            $form.submit();
       }
+
       function redirectToHomePage(){
          url_redirect({url: "/home",
                   method: "post",
@@ -206,5 +208,12 @@
               data: {"token": localStorage.getItem("token")}
             });
       }
+      function deleteProfile(){
+         url_redirect({url:'/u/{{user.username}}/delete',
+              method: "post",
+              data: {"token": localStorage.getItem("token")}
+            });
+      }
+      
    </script>
 </html>
