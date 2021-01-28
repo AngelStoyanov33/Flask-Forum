@@ -247,7 +247,6 @@
             type: 'post',
             data:$('#editForm').serialize(),
             success:function(data, statuss){
-                  alert("Test");
                   url_redirect({url: "/u/{{user.username}}",
                     method: "post",
                     data: {"token":localStorage.getItem("token")}
@@ -276,7 +275,6 @@
             cache: false,
             processData: false,
             success: function(data) {
-               alert("test");
                 console.log('Success!');
                 url_redirect({url: "/u/{{user.username}}",
                     method: "post",
