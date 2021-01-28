@@ -70,7 +70,7 @@ class ThreadService:
 
 
     @staticmethod
-    def get_results_from_search(filter):
+    def get_results_from_search(filter, page_id):
         #if not ThreadService.isUnique(topicdto): return None
         #topicID, title, content
 
@@ -79,8 +79,11 @@ class ThreadService:
         
         if len(filter_topic_name)>0:
             filter_topic_id = topicService.get_topic_id_by_name(filter_topic_name)
+            
             keyword=filter[filter.find('}')+1:].strip()
-            for result in Thread.query.filter_by(topicID=filter_topic_id).filter(Thread.title.contains(keyword)):
+            totalCount=Thread.query.filter_by(topicID=filter_topic_id).filter(Thread.title.contains(keyword)).count()
+            results.append({"totalCount":totalCount})
+            for result in Thread.query.filter_by(topicID=filter_topic_id).filter(Thread.title.contains(keyword)).filter(Thread.id>=(page_id-1)*appsettings.thread_count_on_page).limit(appsettings.thread_count_on_page):
                     results.append({
                         "id": result.id, 
                         "userCreatorID": result.userCreatorID, 
@@ -93,6 +96,8 @@ class ThreadService:
                         "timestampLastUpdated": str(result.timestampLastUpdated)[:10]})
         else:
             keyword=filter.strip()
+            totalCount=Thread.query.filter(Thread.title.contains(keyword)).count()
+            results.append({"totalCount":totalCount})
             for result in Thread.query.filter(Thread.title.contains(keyword)):
                 results.append({
                     "id": result.id, 

@@ -347,7 +347,7 @@
     }
 
     function searchTopic(name){
-      url_redirect({url:'/search',
+      url_redirect({url:'/search/page/1',
                 method: "post",
                 data: {"token": localStorage.getItem("token"), "search":"{"+name+"}"}
               });

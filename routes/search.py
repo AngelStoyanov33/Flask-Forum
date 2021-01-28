@@ -10,9 +10,9 @@ from services.access import require_access, ACCESS_LEVELS
 import json
 
 
-@app.route('/search', methods=['POST', 'GET'])
+@app.route('/search/page/<page_id>', methods=['POST', 'GET'])
 #@require_access(ACCESS_LEVELS['not_logged'])
-def search():
+def search(page_id):
     if request.method == 'POST':
         addTopicMode= False
         addThreadMode= False
@@ -26,5 +26,5 @@ def search():
             logged=False
 
         results = list()
-        results = threadService.get_results_from_search(search)
+        results = threadService.get_results_from_search(search, int(page_id))
         return render_template('search.html', client= client, results=results, search=search, logged=logged)

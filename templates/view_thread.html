@@ -323,11 +323,12 @@
         $('#threadForm').submit(function(e){
                   $(this).append('<input type="hidden" name="token" value="'+localStorage.getItem("token")+'" /> ');
                   $(this).append('<input type="hidden" name="threadId" value="{{ thread.id}}" /> ');
+                  $threadContent= tinymce.get("threadContent").getContent({ format: "text" });
                   e.preventDefault();
                   $.ajax({
                       url: '/thread/edit/{{thread.id}}',
                       type: 'post',
-                      data:$('#threadForm').serialize(),
+                      data:{"token": localStorage.getItem("token"), "threadId": "{{thread.id}}", "threadContent":$threadContent, "threadName": "{{thread.name}}"},
                       success:function(data, statuss){
                         if(data["status"]=="Success"){
                            url_redirect({url: "/thread/{{thread.id}}",
