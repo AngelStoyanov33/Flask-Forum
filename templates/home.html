@@ -13,7 +13,7 @@
     }
 </style>
 <head>
-  <title>Flask chat</title>
+  <title>AskTUES Home</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -347,7 +347,7 @@
     }
 
     function searchTopic(name){
-      url_redirect({url:'/search/page/1',
+      url_redirect({url:'/search',
                 method: "post",
                 data: {"token": localStorage.getItem("token"), "search":"{"+name+"}"}
               });
