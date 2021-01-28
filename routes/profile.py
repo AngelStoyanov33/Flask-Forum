@@ -13,11 +13,15 @@ import os
 def profile_info(username):
     user = User.query.filter_by(username=username).first()
     isRequestOwner = False
+    logged=False
     if request.method == 'POST':
         token = request.form['token']
-        isRequestOwner = account.get_user_by_token(token).username == username
+        client=account.get_user_by_token(token)
+        if client:
+            logged=True
+        isRequestOwner = client.username == username
 
-    return render_template('profile.html', user = user, isRequestOwner = isRequestOwner)
+    return render_template('profile.html', user = user,logged=logged, isRequestOwner = isRequestOwner)
 
 
 @app.route('/u/<username>/edit', methods=['POST', 'GET'])

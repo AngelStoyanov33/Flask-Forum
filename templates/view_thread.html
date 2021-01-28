@@ -1,4 +1,24 @@
 <!DOCTYPE html>
+<style>
+   body
+   {
+     margin:0;
+     padding: 0;
+     height: 100vh;
+ 
+   }
+   #particles-js
+   {
+     background: #005954;
+     background-position: 50% 50%;
+     background-repeat: repeat;
+     background-size: cover;
+     position: fixed;
+     width: 100%;
+     min-height: 100%;
+     z-index: -1;
+   }
+   </style>
 <html lang="en">
    <head>
       <title>AskTUES</title>
@@ -13,8 +33,51 @@
       <script script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-   </head>
+      <script src="https://cdn.tiny.cloud/1/auwm13l0my50ceer928bn8rk9dowrq1bgdjayndxgkqgr7jj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    
+      <script src="{{ url_for('static',filename='js/url_redirect.js') }}"> </script>
+
+      <script>
+        tinymce.init({
+          selector: "#threadContent",
+          plugins: "emoticons",
+          toolbar: "emoticons",
+          toolbar_location: "bottom",
+          menubar: false
+        });
+        tinymce.init({
+          selector: "#reply_content",
+          plugins: "emoticons",
+          toolbar: "emoticons",
+          toolbar_location: "bottom",
+          menubar: false
+        });
+        tinymce.init({
+          selector: "#reply_content_edit",
+          plugins: "emoticons",
+          toolbar: "emoticons",
+          toolbar_location: "bottom",
+          menubar: false
+        });
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+      <script>
+          particlesJS.load("particles-js", "{{ url_for('static', filename='particlesjs.json') }}");
+          
+      </script>
+    
+      <!-- shhhhhh ;) -->
+      <style>
+        .tox-notifications-container{
+          display:none;
+        }
+        
+    
+      </style>
+    </head>
    <body>
+      <div id="particles-js"></div>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-bottom: 3px solid cyan;">
          <div class="container-fluid">
@@ -127,7 +190,9 @@
                   <strong>{{thread.title}}</strong>
                   <br>
                   <br>
-                  <div>{{thread.content}}</div>
+                  <div style="width: 870px;
+                  height: 200px;
+                  overflow: auto;white-space: pre-wrap; word-wrap: break-word;">{{thread.content}}</div>
                </div>
 
                {%endif%}
@@ -277,9 +342,9 @@
       <br>
       <div style="position: relative; clear: both; margin: 10%; left: 160px; width: 1200px;">
             
-         <form method="post" id="replyForm">
+         <form method="post" id="replyForm" novalidate>
            <div class="form-group">
-             <label for="reply_content">Enter your reply</label>
+             <label for="reply_content" style="color: white">Enter your reply</label>
              <textarea type="text" name="reply_content" class="form-control" id="reply_content" rows="4" cols="50" style="resize:none;" required>
             </textarea>
            </div>
@@ -332,7 +397,7 @@
                      <form method="post" id="editReply-{{reply.id}}">
 
                   <div class = "form-group">
-                    <textarea class="form-control" name="reply_content" id="reply_content" rows="3">{{reply.content}}</textarea>
+                    <textarea class="form-control" name="reply_content" id="reply_content_edit" rows="3">{{reply.content}}</textarea>
                   </div>
                   <input type="hidden" id="replyId" name = "replyId" value="{{reply.id}}" />
                   <button type="button" onclick="editReply('{{reply.id}}')" class="btn btn-primary">Submit</button>
@@ -343,7 +408,9 @@
                
                   <div class="col-lg-8">
                      <br>
-                     <div>{{reply.content}}</div>
+                     <div style="width: 800px;
+                  height: 270px;
+                  overflow: auto;white-space: pre-wrap; word-wrap: break-word;">{{reply.content}}</div>
                   </div>
                {% endif %}
                
@@ -395,19 +462,6 @@
                });
       }
 
-
-      function redirectToEditPage(){
-
-        /* window.scrollTo(0,document.body.scrollHeight);
-
-           url_redirect({url: "/thread/{{thread.id}}",
-                    method: "post",
-                    data: {"token": localStorage.getItem("token"), "replyMode" : "1"}
-                    });*/
-                    document.location.reload(true);
-        }
-
-
         function redirectToEditReplyPage(reply_id){
 
 
@@ -421,10 +475,11 @@
         $('#replyForm').submit(function(e){
                   $(this).append('<input type="hidden" name="token" value="'+ localStorage.getItem("token")+'" /> ');
                   e.preventDefault();
+                  $reply_content= tinymce.get("reply_content").getContent({ format: "text" });
                   $.ajax({
                       url: '/thread/{{thread.id}}/reply/add',
                       type: 'post',
-                      data:$('#replyForm').serialize(),
+                      data:{"token": localStorage.getItem("token"), "reply_content": $reply_content},
                       success:function(data, statuss){
                         if(data["status"]=="Success"){
                            url_redirect({url: "/thread/{{thread.id}}",
@@ -439,10 +494,11 @@
          function editReply(reply_id){
             $str = '#editReply-' + reply_id.toString();
                   $($str).append('<input type="hidden" name="token" value="'+ localStorage.getItem("token")+'" /> ');
+                  $reply_content= tinymce.get("reply_content_edit").getContent({ format: "text" });
                   $.ajax({
                       url: '/thread/{{thread.id}}/reply/' + reply_id + '/edit',
                       type: 'post',
-                      data: $($str).serialize(),
+                      data:{"token": localStorage.getItem("token"), "reply_content": $reply_content},
                       success:function(data, statuss){
                         if(data["status"]=="Success"){
                            url_redirect({url: "/thread/{{thread.id}}",

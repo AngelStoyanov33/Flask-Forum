@@ -1,4 +1,16 @@
 <!DOCTYPE html>
+
+<style>
+   .dropdown-menu {
+       width: 100%;
+     }
+ 
+     .scrollable-menu {
+       height: auto;
+       max-height: 200px;
+       overflow-x: hidden;
+     }
+ </style>
 <html lang="en">
    <head>
       <title>Edit profile</title>
@@ -6,6 +18,39 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
       <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+      <script script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+      <script src="https://cdn.tiny.cloud/1/auwm13l0my50ceer928bn8rk9dowrq1bgdjayndxgkqgr7jj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+  <script src="{{ url_for('static',filename='js/url_redirect.js') }}"> </script>
+      <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/particles.css') }}">
+  <script>
+    tinymce.init({
+      selector: "#threadContent",
+      plugins: "emoticons",
+      toolbar: "emoticons",
+      toolbar_location: "bottom",
+      menubar: false
+    });
+    tinymce.init({
+      selector: "#topicDescription",
+      plugins: "emoticons",
+      toolbar: "emoticons",
+      toolbar_location: "bottom",
+      menubar: false
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+      particlesJS.load("particles-js", "{{ url_for('static', filename='particlesjs.json') }}");
+      
+  </script>
    </head>
    <body>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -27,7 +72,7 @@
             </div>
          </div>
       </nav>
-         <hr>
+         <div id='particles-js'></div>
          <div class="container bootstrap snippet" style="max-width: 500px; margin: 0 auto;">
             <div class="row">
                <div class="text-center">

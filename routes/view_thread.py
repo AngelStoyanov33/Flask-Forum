@@ -27,7 +27,7 @@ def view_thread(id):
 
     if "threadEditMode" in request.form:
         if int(request.form["threadEditMode"])>0:
-            editMode = True
+            editMode=True
 
     if "editReplyMode" in request.form:
         if int(request.form["editReplyMode"]) > 0:

@@ -1,32 +1,100 @@
 <!DOCTYPE html>
+
 <html lang="en">
+<style>
+   body
+   {
+     margin:0;
+     padding: 0;
+     height: 100vh;
+ 
+   }
+   #particles-js
+   {
+     background: #005954;
+     background-position: 50% 50%;
+     background-repeat: repeat;
+     background-size: cover;
+     position: fixed;
+     width: 100%;
+     min-height: 100%;
+     z-index: -1;
+   }
+   h4, h1{
+      color: white;
+   }
+   </style>
    <head>
       <title>My account</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
       <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+      <script>
+            particlesJS.load("particles-js", "{{ url_for('static', filename='particlesjs.json') }}");
+            
+      </script>
    </head>
    <body>
+       <div id="particles-js"></div>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-bottom: 3px solid cyan;">
          <div class="container-fluid">
-            <a class="navbar-brand" href="">AskTUES</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                     <a class="nav-link active" onclick="redirectToHomePage()" type="button" aria-current="page">Home</a>
-                  </li>
-                  <li class="nav-item">
-                  </li>
-               </ul>
-               <button class="btn btn-outline-success">My Account</button>
-            </div>
+           <a class="navbar-brand">AskTUES</a>
+           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+               <li class="nav-item">
+                 <a class="nav-link active" onclick="redirectToHomePage()" type="button" aria-current="page">Home</a>
+               </li>
+               <li class="nav-item">
+               </li>
+             </ul>
+             <form id="searchForm" class="d-flex" method="post" action="/search/page/1" style=" width: 400px; margin-right: 32.5%;">
+               <input class="form-control me-2" placeholder="Search..." name="search">
+               
+               <button class="btn btn-outline-success" type="submit">Search</button>
+             </form>
+             
+   
+             {% if logged %}
+                 <div class="dropdown">
+                   <button class="btn btn-secondary dropdown-toggle" style="margin-right: 30px;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     My account
+                   </button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                     <a class="dropdown-item" onclick="redirectToProfilePage()">My account</a>
+                     <a class="dropdown-item" onclick="logout()">Logout</a>
+                   </div>
+                 </div>
+                  <script>
+                     function redirectToProfilePage(){
+                     url_redirect({url:'/u/{{username}}',
+                              method: "post",
+                              data: {"token": localStorage.getItem("token")}
+                           });
+                  }
+                  </script>
+                  {% else %}
+                  <form action="/" method="post">
+                     <button type = "submit" value="0" name="registerMode" class="btn btn-outline-success">Login</button>
+                     <button type = "submit" value="1" name="registerMode" class="btn btn-outline-primary">Sign up</button>
+                 </form>
+                  {% endif %}
+   
+             
+   
+   
+             <!-- <button type="button" onclick="redirectToProfilePage()" class="btn btn-outline-success">My Account</button> -->
+   
+   
+   
+           </div>
          </div>
-      </nav>      
+       </nav>      
       <div class="container bootstrap snippet" style="max-width: 500px; margin: 0 auto;">
          <hr>
          <div class="row">
@@ -109,7 +177,7 @@
                   </div>
                </ul>
             </div>
-         </div><hr>
+         </div>
       </div>
    </body>
    <script>
