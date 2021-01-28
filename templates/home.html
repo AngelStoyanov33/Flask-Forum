@@ -211,8 +211,8 @@
                   e.preventDefault();
                   $topicName = document.getElementById("topicName").value;
                   $topicDescription= tinymce.get("topicDescription").getContent({ format: "text" });
-
-                  $.ajax({
+                  if($topicDescription.length>0){
+                    $.ajax({
                       url: '/topic/add',
                       type: 'post',
                       data:{"topicName":$topicName, "topicDescription":$topicDescription, "token":localStorage.getItem("token")},
@@ -221,6 +221,8 @@
                       }
                   });
                   redirectToHomePage();
+                  }
+                  
                 });
           </script>
           {% elif addThreadMode==True %}
@@ -267,7 +269,8 @@
                   $threadName = document.getElementById("threadName").value;
                   $topicId = document.getElementById("topicSelector").value;
                   $threadContent= tinymce.get("threadContent").getContent({ format: "text" });
-                  $.ajax({
+                  if($threadContent.length>0){
+                      $.ajax({
                       url: '/thread/add',
                       type: 'post',
                       data:{"threadName":$threadName, "topicId":$topicId,"threadContent":$threadContent, "token":localStorage.getItem("token")},
@@ -276,6 +279,8 @@
                       }
                   });
                   redirectToHomePage();
+                  }
+                  
                 });
                 /*$('#threadForm').submit(function(e){
                   $(this).append('<input type="hidden" name="token" value="'+localStorage.getItem("token")+'" /> ');
@@ -347,7 +352,7 @@
     }
 
     function searchTopic(name){
-      url_redirect({url:'/search',
+      url_redirect({url:'/search/page/1',
                 method: "post",
                 data: {"token": localStorage.getItem("token"), "search":"{"+name+"}"}
               });

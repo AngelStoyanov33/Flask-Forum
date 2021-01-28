@@ -328,7 +328,6 @@
                   $.ajax({
                       url: '/thread/edit/{{thread.id}}',
                       type: 'post',
-                      data:$('#threadForm').serialize(),
                       data:{"token": localStorage.getItem("token"), "threadId": "{{thread.id}}", "threadContent":$threadContent, "threadName": "{{thread.name}}"},
                       success:function(data, statuss){
                         if(data["status"]=="Success"){
@@ -342,18 +341,20 @@
                 });
       </script>
       <br>
-      <div style="position: relative; clear: both; margin: 10%; left: 160px; width: 1200px;">
+      {% if logged %}
+      <div style="position: relative; clear: both; margin-left: 10%; left: 160px; width: 1200px;">
             
+         
          <form method="post" id="replyForm" novalidate>
            <div class="form-group">
-             <label for="reply_content" style="color: white">Enter your reply</label>
-             <textarea type="text" name="reply_content" class="form-control" id="reply_content" rows="4" cols="50" style="resize:none;" required>
-            </textarea>
+             <label for="reply_content" style="color: white; margin-top:2%">Enter your reply</label>
+             <textarea type="text" name="reply_content" class="form-control" id="reply_content" rows="4" cols="50" style="resize:none;" required></textarea>
            </div>
            <br>
            <button type="submit" class="btn btn-primary">Submit</button>
          </form>
        </div>
+       {%endif%}
 
       {% for reply in replies %}
       <div style="width: 1400px; margin: 0 auto; margin-top: 2%;">
@@ -426,14 +427,14 @@
 
          {% if repliers[reply].username == client.username  %}
          <div class="column">
-                  <a onclick="redirectToEditReplyPage('{{reply.id}}')" class="btn btn-primary a-btn-slide-text" style="position: relative; right: -84%;">
+                  <a onclick="redirectToEditReplyPage('{{reply.id}}')" class="btn btn-primary a-btn-slide-text" style="position: relative; right: -83.2%;">
                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     <span><strong>Edit</strong></span>            
                 </a>
 
-                <a onclick="deleteReply('{{reply.id}}')" class="btn btn-primary a-btn-slide-text" style="position: relative; right: -84%;">
+                <a onclick="deleteReply('{{reply.id}}')" class="btn btn-primary a-btn-slide-text" style="position: relative; right: -83.2%;">
                   <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                  <span><strong>Delete</strong></span>            
+                  <span><strong>Delete</strong></span>               
               </a>
                 
          </div>
@@ -471,8 +472,9 @@
             method: "post",
             data: {"token": localStorage.getItem("token"), "editReplyMode" : "1", "replyId" : reply_id.toString()}
             });
-         }
-		function deleteReply(reply_id){
+            
+      }
+      function deleteReply(reply_id){
            $.ajax({
               url: '/thread/{{thread.id}}/reply/' + reply_id + '/delete',
               type: 'post',
@@ -488,12 +490,11 @@
               }
            });
         }
-
-
         $('#replyForm').submit(function(e){
                   $(this).append('<input type="hidden" name="token" value="'+ localStorage.getItem("token")+'" /> ');
                   e.preventDefault();
                   $reply_content= tinymce.get("reply_content").getContent({ format: "text" });
+                  if ($reply_content.length){
                   $.ajax({
                       url: '/thread/{{thread.id}}/reply/add',
                       type: 'post',
@@ -507,6 +508,7 @@
                         }
                       }
                   });
+               }
                 });
 
          function editReply(reply_id){
@@ -528,7 +530,13 @@
                   });  
 
          }
-
+         function logout(){
+            localStorage.setItem("token", "")
+            url_redirect({url:'/',
+                     method: "post",
+                     data: {"token": localStorage.getItem("token")}
+                  });
+         }
 
 
 
